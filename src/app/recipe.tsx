@@ -1,4 +1,4 @@
-import { View, StyleSheet, StatusBar } from "react-native";
+import { View, StyleSheet, StatusBar, TouchableOpacity } from "react-native";
 import { Header } from "@/components/header";
 import { Content } from "@/components/content";
 import { HeaderTitle } from "@/components/headerTitle";
@@ -29,15 +29,17 @@ export default function Home() {
                                 justifyContent: "center",
                                 alignItems: "center",
                                 bottom:20,
-                                }}>,
+                                }}>
                             
                             <Button.Icon icon={Plus} />
                         </Button>
                 </View>
+                <TouchableOpacity>
                 <View style={styles.alignText}>
                     <HeaderTitle style={{color: colors.blue.base}} title="Minhas receitas"/>
                     <HeaderText style={{fontSize:14}}text="Acompanhe seus medicamentos cadastrados e gerencie lembretes"/>
                 </View>
+                </TouchableOpacity>
             </Header>
             <Content>
                 <Medicines textTitle="Nome do remédio" textHour="14:00" textCicle="A cada 12 horas"/>

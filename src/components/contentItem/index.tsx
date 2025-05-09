@@ -11,9 +11,7 @@ type Props = {
 
 export const ContentItem = ({textTitle, textDescription, image}: Props) => {
     return(
-        <TouchableOpacity activeOpacity={0.7} 
-                            onPress={() => {router.navigate("/recipe");
-        }}>
+        
         <View style={styles.container} >
             <View style={styles.alignItems}>
                 <View style={styles.imageContainer}>
@@ -27,6 +25,5 @@ export const ContentItem = ({textTitle, textDescription, image}: Props) => {
                 
             </View>
         </View>
-        </TouchableOpacity>
     )
 }
