@@ -1,24 +1,48 @@
-import { View, StyleSheet, StatusBar, TouchableOpacity } from "react-native";
+import { useState ,useCallback } from "react"; 
+import { View, StyleSheet, StatusBar, TouchableOpacity, Alert, FlatList } from "react-native";
 import { Header } from "@/components/header";
 import { Content } from "@/components/content";
 import { HeaderTitle } from "@/components/headerTitle";
 import { HeaderText } from "@/components/headerText";
 import { Button } from "@/components/button";
 import { Medicines } from "@/components/medicines";
+import { recipeStorage, RecipeStorage } from "@/storage/recipes-storage";
 import { Plus, ArrowLeft} from "lucide-react-native"
 import { colors } from "@/styles/theme";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
+
 
 
 
 export default function Home() {
+
+    const [recipes, setRecipes] = useState<RecipeStorage[]>([])
+
+    async function getRecipes(){
+        try{
+            const response = await recipeStorage.getRecipes()
+            setRecipes(response)
+
+        }catch (error) {
+            Alert.alert("Erro", "Não foi possível carregar as receitas")
+            console.log(error)
+        }
+    }
+
+    useFocusEffect(useCallback(() => {
+        getRecipes()
+    }
+    , []))
+
     return (
         <View style= {{flex:1}}>
             <StatusBar backgroundColor={colors.gray[600]} barStyle={"dark-content"}/>
             <Header>
                     
                     <View style={styles.align}>
-                        <ArrowLeft />
+                        <TouchableOpacity onPress={() => router.navigate("/home")}>
+                            <ArrowLeft />
+                        </TouchableOpacity>
                         <Button 
                             onPress={() => router.navigate("/newRecipe")}
                             style={{
@@ -42,9 +66,18 @@ export default function Home() {
                 </TouchableOpacity>
             </Header>
             <Content>
-                <Medicines textTitle="Nome do remédio" textHour="14:00" textCicle="A cada 12 horas"/>
-                <Medicines textTitle="Nome do remédio" textHour="08:00" textCicle="A cada 7 dias"/>
-                <Medicines textTitle="Nome do remédio" textHour="12:00" textCicle="A cada 1 dia"/>
+                <FlatList data={recipes} keyExtractor={(item) => item.id} renderItem={({item}) => (
+                    <Medicines 
+                    textTitle={item.nome}
+                    textHour={item.horario}
+                    textCicle={item.recorrencia}
+                    /> 
+                )}
+                style={styles.list}
+                contentContainerStyle={styles.linksContent}
+                showsVerticalScrollIndicator={false}
+                />                
+                
             </Content>
             
         </View>
@@ -60,5 +93,19 @@ const styles = StyleSheet.create({
     alignText:{
         bottom: 20,
         gap: 5,
-    }
+    },
+    list: {
+        flex:1,
+        backgroundColor: colors.gray[800],
+        width: "100%",
+        height: "100%",
+        maxWidth: 326,
+        borderRadius: 12,
+        gap:12,
+    },
+    
+    linksContent: {
+    
+    paddingVertical: 8,
+},
 });

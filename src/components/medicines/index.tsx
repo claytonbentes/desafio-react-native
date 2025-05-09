@@ -29,7 +29,7 @@ export const Medicines = ({textTitle, textHour, textCicle}: Props) => {
               <HeaderText style={{fontSize: 12, color: colors.gray[100]}} text={textCicle} />
             </View>
           </View>
-          <Trash2 style={styles.icon}/>
+          <Trash2 size={22} style={styles.icon}/>
         </View>
         
       </View>
