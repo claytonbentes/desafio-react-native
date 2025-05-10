@@ -1,19 +1,25 @@
+import { forwardRef } from "react";
 import { styles } from "./styles";
-import {View, Text} from "react-native";
+import { View, TextProps, TouchableOpacity} from "react-native";
 import { HeaderTitle } from "../headerTitle";
 import { HeaderText } from "../headerText"; 
-import {Trash2, Clock, Repeat} from "lucide-react-native"
+import { Trash2, Clock, Repeat} from "lucide-react-native"
 import { colors } from "@/styles/theme";
+import { router } from "expo-router";
 
-type Props = {
+type Props = TextProps & {
+    id: string  
     textTitle: string
     textHour: string
-    textCicle: string
+    textCicle: string,
+    tomarAgora: boolean,
+    onRemove: () => void; 
 }
 
-export const Medicines = ({textTitle, textHour, textCicle}: Props) => {
+export const Medicines = forwardRef<View, Props> (({textTitle, textHour, textCicle, onRemove, id, tomarAgora=false}, ref) => {
   return (
-    <View style={styles.container}>
+    
+    <View ref={ref} style={styles.container}>
       <View style={styles.alignItems}>
         <HeaderTitle style= {{fontSize: 16}} title={textTitle} />
         <View style={styles.alignContainers}>
@@ -29,11 +35,14 @@ export const Medicines = ({textTitle, textHour, textCicle}: Props) => {
               <HeaderText style={{fontSize: 12, color: colors.gray[100]}} text={textCicle} />
             </View>
           </View>
-          <Trash2 size={22} style={styles.icon}/>
+          <TouchableOpacity onPress={onRemove} style={styles.removeButton}>
+            <Trash2 size={22} style={styles.icon}/>
+          </TouchableOpacity>
         </View>
         
       </View>
       
     </View>
+    
   );
-}
+})

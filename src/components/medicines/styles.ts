@@ -51,4 +51,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 8,
   },
+  removeButton: {
+    marginLeft: "auto",
+  },
 });

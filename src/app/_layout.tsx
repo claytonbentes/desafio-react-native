@@ -8,6 +8,8 @@ import { useFonts,
 
 import { Loading } from "@/components/loading"
 
+
+
 export default function Layout() {
     const [fontsLoaded] = useFonts({
         NunitoSans_400Regular,

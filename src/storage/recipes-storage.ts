@@ -29,4 +29,16 @@ async function saveRecipe(newRecipe: RecipeStorage) {
     }
 }
 
-export const recipeStorage = { getRecipes, saveRecipe }
+async function removeRecipe(id: string){
+    try{
+        const storage = await getRecipes()
+        const updated = storage.filter((item) => item.id !== id)
+
+        await AsyncStorage.setItem(RECIPES_STORAGE_KEY, JSON.stringify(updated))
+
+    }catch (error) {
+        throw error
+    }
+}
+
+export const recipeStorage = { getRecipes, saveRecipe, removeRecipe}

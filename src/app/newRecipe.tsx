@@ -33,7 +33,7 @@ async function handleRecipe(){
         })
 
     }catch (error) {
-        Alert.alert("Erro", "Não foi possível salvar o link")
+        Alert.alert("Erro", "Não foi possível salvar a receita")
         console.log(error)
     }
 
@@ -75,7 +75,9 @@ async function handleRecipe(){
                 </View>
             </View>
             <View style={styles.button}>
-                <Button onPress={() => {handleRecipe(), Alert.alert("Sucesso", "Receita salva com sucesso"), router.navigate("/home")}} style={{backgroundColor: colors.red.base, width: 200, height: 50, borderRadius: 8}}>
+                <Button onPress={() => {handleRecipe(), 
+                                        Alert.alert("Sucesso", "Receita salva com sucesso", [{text: "Ok", onPress: () => router.navigate("/home")}])}} 
+                                        style={{backgroundColor: colors.red.base, width: 200, height: 50, borderRadius: 8}}>
                     <Button.Icon icon={Plus} />
                     <Button.Title>Adicionar</Button.Title>
                 </Button>

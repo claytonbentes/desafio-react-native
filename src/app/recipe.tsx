@@ -9,12 +9,12 @@ import { Medicines } from "@/components/medicines";
 import { recipeStorage, RecipeStorage } from "@/storage/recipes-storage";
 import { Plus, ArrowLeft} from "lucide-react-native"
 import { colors } from "@/styles/theme";
-import { router, useFocusEffect } from "expo-router";
+import { router, useFocusEffect, Link } from "expo-router";
 
 
 
 
-export default function Home() {
+export default function Recipe() {
 
     const [recipes, setRecipes] = useState<RecipeStorage[]>([])
 
@@ -27,6 +27,27 @@ export default function Home() {
             Alert.alert("Erro", "Não foi possível carregar as receitas")
             console.log(error)
         }
+    }
+
+    async function recipeRemove(id: string){
+        try{
+            await recipeStorage.removeRecipe(id)
+            getRecipes()
+        }catch (error) {
+            Alert.alert("Erro", "Não foi possível remover a receita")
+            console.log(error)
+        }
+    }
+
+    async function handleRemove(id: string){
+        Alert.alert("Remover", "Deseja realmente remover a receita?", [
+                {
+                    style: "cancel", text: "Cancelar"
+                },
+                {
+                    text: "Sim", onPress: () => recipeRemove(id)
+                }
+            ])
     }
 
     useFocusEffect(useCallback(() => {
@@ -66,12 +87,22 @@ export default function Home() {
                 </TouchableOpacity>
             </Header>
             <Content>
-                <FlatList data={recipes} keyExtractor={(item) => item.id} renderItem={({item}) => (
-                    <Medicines 
-                    textTitle={item.nome}
-                    textHour={item.horario}
-                    textCicle={item.recorrencia}
-                    /> 
+                <FlatList 
+                    data={recipes} 
+                    keyExtractor={(item) => item.id} 
+                    renderItem={({item}) => (
+                        
+                        <TouchableOpacity onPress={() => router.navigate(`/recipe/${item.id}`)} >
+                            <Medicines 
+                            textTitle={item.nome}
+                            textHour={item.horario}
+                            textCicle={item.recorrencia}
+                            id={item.id}
+                            tomarAgora={item.tomarAgora}
+                            onRemove={() => handleRemove(item.id)}
+                            />
+                        </TouchableOpacity>
+                        
                 )}
                 style={styles.list}
                 contentContainerStyle={styles.linksContent}
